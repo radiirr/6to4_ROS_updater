@@ -1,0 +1,15 @@
+#proton_VPN_6to4_updater v_0.1
+:local name="protonIP"
+:set name="protonIP" [ip ipsec policy get [/ip ipsec policy find peer=ProtonVPN] src-address]
+:set name="protonIP" [:pick [tostr $protonIP] 0 [:find [tostr $protonIP] "/"]]
+:log info ("protonIP: " . $protonIP)
+
+# Update the tuniface with dynamic IP
+/interface 6to4 {
+   :if ([get number=sit2 local-address] != $protonIP) do={
+      :log info ("Updating " . $tuniface . " local-address with new IP " . $protonIP . "...")
+      set local-address=$protonIP numbers=sit2
+   }
+}
+
+:log info ("IPv6 Tunnel - New IP: " . $protonIP . "...")
