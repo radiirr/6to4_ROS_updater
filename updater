@@ -7,7 +7,7 @@
 # Update the tuniface with dynamic IP
 /interface 6to4 {
    :if ([get number=sit2 local-address] != $protonIP) do={
-      :log info ("Updating " . $tuniface . " local-address with new IP " . $protonIP . "...")
+      :log info ("Updating local-address with new IP " . $protonIP . "...")
       set local-address=$protonIP numbers=sit2
    }
 }
